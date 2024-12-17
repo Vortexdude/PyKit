@@ -2,8 +2,11 @@ import os
 import yaml
 import json
 import zipfile
+import shutil
 from typing import Union
 from pathlib import Path
+from glob import glob
+
 import requests
 from .exceptions import PathNotExists, NotYourType, NotGitHubUrl
 
@@ -68,6 +71,7 @@ def unzip(
         zip_ref.extractall(output_dir)
 
     print(f"Files successfully extracted to: {output_dir}")
+    return output_dir
 
 
 def is_github_url(url):
@@ -222,3 +226,34 @@ def load_env_vars(*vars):
 
     return envs
 
+def cleanup_file(regex: str | Path):
+    """
+    Remove the file form the directory regex can also be passed with the glob
+    Args:
+        regex ():
+    Returns:
+
+    """
+    if isinstance(regex, Path):
+        regex = str(regex)
+
+    files = glob(regex)
+    for file in files:
+        os.remove(file)
+    return regex
+
+
+def move_files(file_location, destination):
+    """
+    Move the file from one location to another using glob and shutil
+    Args:
+        file_location ():
+        destination ():
+
+    Returns:
+
+    """
+    files = glob(file_location)
+    for file in files:
+        shutil.move(file, destination)
+    return destination
