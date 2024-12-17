@@ -228,7 +228,7 @@ def load_env_vars(*vars):
 
 def cleanup_file(regex: str | Path):
     """
-    Remove the file form the directory regex can also be passed with the glob
+    Remove the file / directory form the directory regex can also be passed with the glob
     Args:
         regex ():
     Returns:
@@ -238,8 +238,11 @@ def cleanup_file(regex: str | Path):
         regex = str(regex)
 
     files = glob(regex)
-    for file in files:
-        os.remove(file)
+    for item in files:
+        if os.path.isdir(item):
+            shutil.rmtree(item)
+        else:
+            os.remove(item)
     return regex
 
 

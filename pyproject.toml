@@ -1,6 +1,6 @@
 [project]
 name = "pykit_vortexdude"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Nitin Namdev", email="itsmyidbro@gmail.com" },
 ]
