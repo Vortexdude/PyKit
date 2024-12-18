@@ -1,8 +1,8 @@
 name: Publish Python 🐍 distributions 📦 to PyPI
 
 on:
-  push:
-    branches: [main, master]
+  release:
+    type: [created]
 
 jobs:
   build-n-publish:
@@ -30,5 +30,3 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
-
-    
