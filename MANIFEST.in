@@ -1,1 +1,4 @@
-include *.md LICENSE requirements.txt
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include src *
