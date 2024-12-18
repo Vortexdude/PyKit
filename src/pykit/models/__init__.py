@@ -1,1 +1,1 @@
-from . http_res import HttpRes
+from .http_res import HttpRes
