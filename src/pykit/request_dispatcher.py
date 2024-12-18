@@ -2,7 +2,6 @@ import json
 import socket
 
 
-
 class BaseHttpReq(object):
     def __init__(self, host: None | str = None, socket_file: None | str = None, *args, **kwargs):
         if "logger" in kwargs:
