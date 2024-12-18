@@ -14,7 +14,7 @@ def read_requirements(filename=None):
 
 setup(
     name="cloudhive",
-    version="0.0.1",
+    version="0.0.2",
     author="Nitin Namdev",
     author_email="itsmyidbro@gmail.com",
     description="Some Useful Utils package",
