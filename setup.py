@@ -13,11 +13,11 @@ def read_requirements(filename=None):
         raise RuntimeError("requirements.txt not found. Please ensure it exists.")
 
 setup(
-    name="pykit_vortexdude",
-    version="0.0.4",
+    name="cloudhive",
+    version="0.0.1",
     author="Nitin Namdev",
     author_email="itsmyidbro@gmail.com",
-    description="A Example Utils package",
+    description="Some Useful Utils package",
     long_description=open("README.md").read() if os.path.exists("README.md") else "",
     long_description_content_type="text/markdown",
     url="https://github.com/vortexdude/PyKit",
