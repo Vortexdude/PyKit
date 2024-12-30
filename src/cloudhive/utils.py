@@ -8,7 +8,7 @@ from pathlib import Path
 from glob import glob
 
 import requests
-from .exceptions import PathNotExists, NotYourType, NotGitHubUrl
+from .exceptions import PathNotExists, NotYourType, NotGitHubUrl, ChiveError
 
 
 def path_joiner(*paths):
@@ -260,3 +260,41 @@ def move_files(file_location, destination):
     for file in files:
         shutil.move(file, destination)
     return destination
+
+def basename(file: Path | str) -> str | Path:
+    """
+    Get the base name of a file path.
+
+    This function returns the last component of the given file path. It supports both `Path` and `str` types.
+    If the input is not of a supported type, it raises a `ChiveError`.
+
+    Args:
+        file (Union[Path, str]): The file path as a `Path` object or a string.
+
+    Returns:
+        Union[str, Path]: The base name of the file as a string if the input is a string,
+                          or as a `Path` object if the input is a `Path`.
+
+    Raises:
+        ChiveError: If the input type is neither `Path` nor `str`.
+
+    Examples:
+        >>> basename(Path("/path/to/file.txt"))
+        'file.txt'
+        >>> basename("/path/to/file.txt")
+        'file.txt'
+        >>> basename(123)
+        ChiveError: Unsupported type: <class 'int'>
+    """
+    if isinstance(file, Path):
+        filename = file.name
+        if not filename:
+            raise ChiveError(f"The provided Path object '{file}' does not have a valid name.")
+        return filename
+    elif isinstance(file, str):
+        base_name = os.path.basename(file)
+        if not base_name:
+            raise ChiveError(f"The provided string path '{file}' does not have a valid name.")
+        return base_name
+    else:
+        raise ChiveError(f"Unsupported type: {type(file)}. Expected 'Path' or 'str'.")

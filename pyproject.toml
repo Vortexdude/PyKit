@@ -1,6 +1,6 @@
 [project]
 name = "cloudhive"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Nitin Namdev", email="itsmyidbro@gmail.com" },
 ]

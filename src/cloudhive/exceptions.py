@@ -11,3 +11,7 @@ class PathNotExists(Exception):
 class NotGitHubUrl(Exception):
     def __init__(self, url):
         super().__init__(f"URL {url} is not follow the Github format")
+
+class ChiveError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
