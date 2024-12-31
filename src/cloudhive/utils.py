@@ -61,6 +61,8 @@ def unzip(
     # If a parent directory is specified, prepend it to the output directory
     if parent_dir:
         output_dir = Path(parent_dir) / output_dir
+    else:
+        output_dir = archive_path.with_suffix("")
 
     # Create the output directory if it doesn't exist and `force_create` is True
     if force_create and not output_dir.exists():
