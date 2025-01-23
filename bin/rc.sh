@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 CREATE_RELEASE=0
 VIRTUAL_ENV_NAME=".venv"
 DEFAULT_PACKAGE_VERSION="1.0.1"
@@ -11,12 +13,8 @@ PROJECT_PATH="${HOME_PATH}/src/cloudhive"
 commit_message="${1}"
 
 function extract_message() {
-    if [[ $commit_message == "release-"* ]]; then
+    if [[ $commit_message =~ "^release-([0-9]).{3}" ]]; then
         package_version=$(echo $package_version | cut -d '-' -f 2)
-        if ! [[ $package_version =~ '^[0-9].[0-9].[0-9]$' ]] ; then
-            echo "[ Warning ] Version not validated successfully! Using default ${DEFAULT_PACKAGE_VERSION}"
-            package_version="${DEFAULT_PACKAGE_VERSION}"
-        fi
         CREATE_RELEASE=1
     fi
 }
