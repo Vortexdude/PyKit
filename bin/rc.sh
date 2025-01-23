@@ -13,7 +13,7 @@ PROJECT_PATH="${HOME_PATH}/src/cloudhive"
 commit_message="${1}"
 
 function extract_message() {
-    if [[ $commit_message =~ "^release-([0-9]).{3}" ]]; then
+    if [[ $commit_message =~ "^release-.*" ]]; then
         package_version=$(echo $package_version | cut -d '-' -f 2)
         CREATE_RELEASE=1
     fi
