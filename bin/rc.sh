@@ -16,7 +16,7 @@ function extract_message() {
     # filter - '(dev|release)-YYYY-qX.X.X'
     re="^(dev|release)-([0-9]+).([0-9]+)\.([0-9]+)"
     if [[ $commit_message =~ $re ]]; then
-        package_version=$(echo $package_version | cut -d '-' -f 2)
+        package_version=$(echo $commit_message | cut -d '-' -f 2)
         CREATE_RELEASE=1
     fi
 }
