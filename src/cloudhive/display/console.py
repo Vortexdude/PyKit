@@ -15,7 +15,7 @@ print(line2)
 
 
 """
-from template import BaseStringTemplate
+from .template import BaseStringTemplate
 
 MAX_CHAR_LENGTH = 50
 MIN_FILLER = 5
