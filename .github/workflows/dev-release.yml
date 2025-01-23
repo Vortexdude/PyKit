@@ -17,7 +17,9 @@ jobs:
       with:
         python-version: 3.12
 
-    - run: echo ${{ github.event.head_commit.message }}
+    - name: Dynamically Extracted the data
+      run: bash bin/rc.sh ${{ github.event.head_commit.message }}
+
 
 #    - name: get the commit_message
 #      run: python -m pip install --upgrade pip
