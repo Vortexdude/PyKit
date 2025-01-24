@@ -22,8 +22,11 @@ jobs:
 
     - name: print the create release
       run: |
-        echo "Creating release ${CREATE_RELEASE}" 
+        echo "Creating release ${is_release}" 
         echo "With the version ${package_version}"
+      with:
+        is_release: ${{ env.CREATE_RELEASE }}
+        package_version: ${{ env.package_version }}
 
 #    - name: get the commit_message
 #      run: python -m pip install --upgrade pip
