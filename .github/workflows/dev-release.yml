@@ -12,11 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.12
-
     - name: Extract the version from commit_message
       run: |
         echo "CREATE_RELEASE=0" >> $GITHUB_ENV
@@ -37,6 +32,14 @@ jobs:
           sed -i "s/version = \".*\"/version = \"${project_version}\"/" $project_file
         fi
 
-    - name: validate file
+    - name: validate version
+      run: cat "${PWD}/pyproject.toml"
+
+    - name: Commit report
       run: |
-        cat "${PWD}/pyproject.toml"
+        git config --global user.name 'github-action'
+        git config --global user.email 'github@users.noreply.github.com'
+        git checkout -b "tag-v${{ env.package_version }}"
+        git add ${PWD}/pyproject.toml
+        git commit -m "Automated report"
+        git push
