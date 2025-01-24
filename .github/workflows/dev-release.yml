@@ -32,7 +32,7 @@ jobs:
       run: |
         project_file="${PWD}/pyproject.toml"
         project_version=${{ env.package_version }}
-        is_release=${{ env.package_version }}
+        is_release=${{ env.CREATE_RELEASE }}
         if [[ "${is_release}" == "1" ]]; then
           sed -i "s/version = \".*\"/version = \"${project_version}\"/" $project_file
         fi
