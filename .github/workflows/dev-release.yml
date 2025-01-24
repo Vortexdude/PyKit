@@ -17,16 +17,26 @@ jobs:
       with:
         python-version: 3.12
 
-    - name: Dynamically Extracted the data
-      run: bash bin/rc.sh ${{ github.event.head_commit.message }}
-
-    - name: print the create release
+    - name: Extract the version from commit_message
       run: |
-        echo "Creating release ${{ env.CREATE_RELEASE }}" 
-        echo "With the version ${{ env.package_version }}"
+        echo "CREATE_RELEASE=0" >> $GITHUB_ENV
+        pattern="^release-([0-9]+.[0-9]+\.[0-9]+)"
+        commit_message=${{ github.event.head_commit.message }}
+        if [[ $commit_message =~ $pattern ]]; then
+          package_version="${BASH_REMATCH[1]}"
+          echo "package_version=$package_version" >> $GITHUB_ENV
+          echo "CREATE_RELEASE=1" >> $GITHUB_ENV
+        fi
 
-#    - name: get the commit_message
-#      run: python -m pip install --upgrade pip
-#
-#    - name: Install build dependencies
-#      run: python -m pip install setuptools twine build
+    - name: change the version in file
+      run: |
+        project_file="${PWD}/pyproject.toml"
+        project_version=${{ env.package_version }}
+        is_release=${{ env.package_version }}
+        if [[ "${is_release}" == "1" ]]; then
+          sed -i "s/version = \".*\"/version = \"${project_version}\"/" $project_file
+        fi
+
+    - name: validate file
+      run: |
+        cat "${PWD}/pyproject.toml"
