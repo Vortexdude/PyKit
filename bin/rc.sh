@@ -16,8 +16,8 @@ function extract_message() {
 
     if [[ $commit_message =~ $pattern ]]; then
         package_version="${BASH_REMATCH[1]}"
-        echo "package_version = ${package_version}"
-        export CREATE_RELEASE=1
+        echo "package_version=$package_version" >> $GITHUB_ENV
+        echo "CREATE_RELEASE=1" >> $GITHUB_ENV
     fi
 }
 
@@ -31,7 +31,7 @@ function change_version() {
 if [[ "$GITHUB_ACTIONS" == "true" ]]; then
     echo "[ INFO ] Running in GitHub Actions"
     extract_message
-    # [[ -z "${package_version}" ]] && echo "[ ERROR ] Cant extract the package value from commit message" >&2 && exit 1
+    [[ -z "${package_version}" ]] && echo "[ ERROR ] Cant extract the package value from commit message" >&2 && exit 1
     echo "[ INFO ] Changing the version of the package cloudhive ${package_version}"
     change_version "${HOME_PATH}/pyproject.toml" "${package_version}"
     echo "[ INFO ] Package cloudhive has updated successfully!"
