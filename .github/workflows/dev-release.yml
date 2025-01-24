@@ -21,7 +21,9 @@ jobs:
       run: bash bin/rc.sh ${{ github.event.head_commit.message }}
 
     - name: print the create release
-      run: echo $CREATE_RELEASE && echo $package_version
+      run: |
+        echo "Creating release ${CREATE_RELEASE}" 
+        echo "With the version ${package_version}"
 
 #    - name: get the commit_message
 #      run: python -m pip install --upgrade pip
