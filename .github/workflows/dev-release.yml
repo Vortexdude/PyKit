@@ -49,4 +49,4 @@ jobs:
           git add ${PWD}/pyproject.toml
           git commit -m "release-${{ env.package_version }}"
           git push --set-upstream origin "tag-v${{ env.package_version }}"
-        if
+        fi
