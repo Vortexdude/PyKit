@@ -14,6 +14,7 @@ commit_message="${1}"
 function extract_message() {
     if [[ $commit_message =~ "^(dev|release)-([0-9]+).([0-9]+)\.([0-9]+)" ]]; then
         package_version=$(echo $commit_message | cut -d '-' -f 2)
+        echo "package_version = ${package_version}"
         export CREATE_RELEASE=1
     fi
 }
@@ -28,7 +29,7 @@ function change_version() {
 if [[ "$GITHUB_ACTIONS" == "true" ]]; then
     echo "[ INFO ] Running in GitHub Actions"
     extract_message
-    [[ -z "$package_version" ]] && echo "[ ERROR ] Cant extract the package value from commit message" >&2 && exit 1
+    [[ -z "${package_version}" ]] && echo "[ ERROR ] Cant extract the package value from commit message" >&2 && exit 1
     echo "[ INFO ] Changing the version of the package cloudhive ${package_version}"
     change_version "${HOME_PATH}/pyproject.toml" "${package_version}"
     echo "[ INFO ] Package cloudhive has updated successfully!"
