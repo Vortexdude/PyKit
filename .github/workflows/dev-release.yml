@@ -41,7 +41,8 @@ jobs:
 
     - name: Commit report
       run: |
-        if [[ ${{ env.CREATE_RELEASE }} == "1" ]]; then        
+        is_release=${{ env.CREATE_RELEASE }}
+        if [[ "${is_release}" == "1" ]]; then        
           git config --global user.name 'github-action'
           git config --global user.email 'github@users.noreply.github.com'
           git checkout -b "tag-v${{ env.package_version }}"
