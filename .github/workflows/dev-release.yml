@@ -8,7 +8,7 @@ on:
 permissions:
   contents: write
 env:
-  release_pattern: "^release-([0-9]+.[0-9]+\.[0-9]+)"
+  release_pattern: '^release-([0-9]+.[0-9]+\.[0-9]+)'
   commit_message: ${{ github.event.head_commit.message }}
 
 jobs:
