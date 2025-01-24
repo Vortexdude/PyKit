@@ -1,0 +1,52 @@
+name: Testing the release before pushing on Pypi
+# https://stackoverflow.com/questions/57921401/push-to-origin-from-github-action/58393457#58393457
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+env:
+  release_pattern: '^release-([0-9]+.[0-9]+\.[0-9]+)'
+  commit_message: ${{ github.event.head_commit.message }}
+
+jobs:
+  basic_bash:
+    name: Testing some function
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Extract the version from commit_message
+      run: |
+        echo "CREATE_RELEASE=0" >> $GITHUB_ENV
+        if [[ $commit_message =~ $release_pattern ]]; then
+          package_version="${BASH_REMATCH[1]}"
+          echo "package_version=$package_version" >> $GITHUB_ENV
+          echo "CREATE_RELEASE=1" >> $GITHUB_ENV
+        fi
+
+    - name: modify the version file
+      run: |
+        project_file="${PWD}/pyproject.toml"
+        project_version=${{ env.package_version }}
+        is_release=${{ env.CREATE_RELEASE }}
+        if [[ "${is_release}" == "1" ]]; then
+          sed -i "s/version = \".*\"/version = \"${project_version}\"/" $project_file
+        fi
+
+    - name: validate version
+      run: cat "${PWD}/pyproject.toml"
+
+    - name: Commit report
+      run: |
+        is_release=${{ env.CREATE_RELEASE }}
+        if [[ "${is_release}" == "1" ]]; then        
+          git config --global user.name 'github-action'
+          git config --global user.email 'github@users.noreply.github.com'
+          git add ${PWD}/pyproject.toml
+          git tag -m "release v${{ env.package_version }}" "v${{ env.package_version }}"
+          git push origin --tags
+        fi
