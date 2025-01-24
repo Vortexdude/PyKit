@@ -42,4 +42,4 @@ jobs:
         git checkout -b "tag-v${{ env.package_version }}"
         git add ${PWD}/pyproject.toml
         git commit -m "Automated report"
-        git push
+        git push --set-upstream origin "tag-v${{ env.package_version }}"
