@@ -6,7 +6,8 @@ import shutil
 from typing import Union
 from pathlib import Path
 from glob import glob
-
+import socket
+import ssl
 import requests
 from .exceptions import PathNotExists, NotYourType, NotGitHubUrl, ChiveError
 
@@ -300,3 +301,24 @@ def basename(file: Path | str) -> str | Path:
         return base_name
     else:
         raise ChiveError(f"Unsupported type: {type(file)}. Expected 'Path' or 'str'.")
+
+
+def _extractor(data, cols=None):
+    _new_dict = {}
+    if not data:
+        raise Exception("Data not provided.")
+    if not cols:
+        cols = ['notBefore', 'notAfter', 'subjectAltName', 'issuer']
+    for _col in cols:
+        if _col in data:
+            _new_dict[_col] = data[_col]
+    return _new_dict
+
+def get_ssl_cert(host=None):
+    if not host:
+        raise Exception("host should not be None")
+    ctx = ssl.create_default_context()
+    with ctx.wrap_socket(socket.socket(), server_hostname=host) as s:
+        s.connect((host, 443))
+        cert = s.getpeercert()
+    return _extractor(cert)
